@@ -22,10 +22,21 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "5c:26:7f:82:3f:d7:78:22:07:65:c4:c1:e2:b1:c9:ce"
+      - attach_workspace:
+          at: ./dist
 
       - checkout
+
       # specify any bash command here prefixed with `run: `
       - run: make test check-gofmt all
-      
-      - store_artifacts:
-          path: /go/src/github.com/bugficks/docker-gen/docker-gen
+      - run: make release
+      - run:
+        name: "Publish Release on GitHub"
+        command: |
+          go get github.com/tcnksm/ghr
+          TAG=$(git describe --tags)
+          ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${TAG} ./dist/
+
+      # - store_artifacts:
+      #     path: /go/src/github.com/bugficks/docker-gen/docker-gen
+
