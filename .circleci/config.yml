@@ -29,7 +29,6 @@ jobs:
           at: ./dist
 
       # specify any bash command here prefixed with `run: `
-      - run: curl -sL https://git.io/goreleaser | bash
       - run: make test check-gofmt all
       - run: make release
       - run:
