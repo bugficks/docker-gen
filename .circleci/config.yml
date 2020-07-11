@@ -22,10 +22,11 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "5c:26:7f:82:3f:d7:78:22:07:65:c4:c1:e2:b1:c9:ce"
-      - attach_workspace:
-          at: ./dist
 
       - checkout
+
+      - attach_workspace:
+          at: ./dist
 
       # specify any bash command here prefixed with `run: `
       - run: curl -sL https://git.io/goreleaser | bash
