@@ -28,14 +28,15 @@ jobs:
       - checkout
 
       # specify any bash command here prefixed with `run: `
+      - run: curl -sL https://git.io/goreleaser | bash
       - run: make test check-gofmt all
       - run: make release
       - run:
-        name: "Publish Release on GitHub"
-        command: |
-          go get github.com/tcnksm/ghr
-          TAG=$(git describe --tags)
-          ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${TAG} ./dist/
+          name: "Publish Release on GitHub"
+          command: |
+            go get github.com/tcnksm/ghr
+            VERSION=$(git describe --tags)
+            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${VERSION} ./dist/
 
       # - store_artifacts:
       #     path: /go/src/github.com/bugficks/docker-gen/docker-gen
